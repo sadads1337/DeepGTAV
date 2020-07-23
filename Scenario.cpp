@@ -336,7 +336,7 @@ void Scenario::setVehiclesList() {
 		if (vehicles[i] == vehicle) continue; //Don't process own car!
 		if (ENTITY::IS_ENTITY_ON_SCREEN(vehicles[i])) {
 			//Check if it is in screen
-			ENTITY::GET_ENTITY_MATRIX(vehicles[i], &rightVector, &forwardVector, &upVector, &position); //Blue or red pill
+			ENTITY::GET_ENTITY_MATRIX(vehicles[i], reinterpret_cast<Any*>(&rightVector), reinterpret_cast<Any*>(&forwardVector), &upVector, &position); //Blue or red pill
 			if (SYSTEM::VDIST2(currentPos.x, currentPos.y, currentPos.z, position.x, position.y, position.z) < 22500) { //150 m.
 				if (ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(vehicle, vehicles[i], 19)){
 					//Check if we see it (not occluded)
@@ -473,7 +473,7 @@ void Scenario::setPedsList(){
 		if (PED::IS_PED_IN_ANY_VEHICLE(peds[i], TRUE)) continue; //Don't process peds in vehicles!
 		if (ENTITY::IS_ENTITY_ON_SCREEN(peds[i])) {
 			//Check if it is in screen
-			ENTITY::GET_ENTITY_MATRIX(peds[i], &rightVector, &forwardVector, &upVector, &position); //Blue or red pill
+			ENTITY::GET_ENTITY_MATRIX(peds[i], reinterpret_cast<Any*>(&rightVector), reinterpret_cast<Any*>(&forwardVector), &upVector, &position); //Blue or red pill
 			if (SYSTEM::VDIST2(currentPos.x, currentPos.y, currentPos.z, position.x, position.y, position.z) < 22500) { //150 m.
 				if (ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(ped, peds[i], 19)){
 					//Check if we see it (not occluded)
@@ -615,7 +615,7 @@ void Scenario::setDirection(){
 	float distance;
 	Vehicle temp_vehicle;
 	Document::AllocatorType& allocator = d.GetAllocator();
-	PATHFIND::GENERATE_DIRECTIONS_TO_COORD(dir.x, dir.y, dir.z, TRUE, &direction, &temp_vehicle, &distance);
+	PATHFIND::GENERATE_DIRECTIONS_TO_COORD(dir.x, dir.y, dir.z, TRUE, direction, &temp_vehicle, distance);
 	Value _direction(kArrayType);
 	_direction.PushBack(direction, allocator).PushBack(distance, allocator);
 	d["direction"] = _direction;
